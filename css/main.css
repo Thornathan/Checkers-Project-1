@@ -53,18 +53,20 @@ button:hover {
 }
 
 .red-checker {
-    background-color: red;
+    background-image: url("../images/black-checker.jpg");
+    background-size: cover;
 }
 
 .blue-checker {
-    background-color: blue;
+    background-image: url("../images/white-checker.jpeg");
+    background-size: cover;
 }
 
 .black {
-    background-color: black;
+    background-image: url("../images/black-marble.jpg");
 }
 
 .red {
-    background-color: red;
+    background-image: url("../images/white-marble.jpg");
 }
 /* Testing some code */
