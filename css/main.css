@@ -40,7 +40,7 @@ button:hover {
     display: inline-block;
     padding: 2%;
     border: 5px solid black;
-    background-image: url(../images/board-container-background.jpeg);
+    background-image: url(../images/board-container-bg.jpg);
     background-size: cover;
 }
 
@@ -64,12 +64,12 @@ button:hover {
     border-radius: 50%;
 }
 
-.b-checker {
+.black-checker {
     background-image: url(../images/black-checker.jpg);
     background-size: cover;
 }
 
-.w-checker {
+.white-checker {
     background-image: url(../images/white-checker.jpeg);
     background-size: cover;
 }
@@ -78,6 +78,6 @@ button:hover {
     background-image: url(../images/black-marble.jpg);
 }
 
-/* .white {
-    background-image: url(../images/board-container-background.jpeg);
-} */
+.white {
+    background-image: url(../images/white-marble.jpeg);
+}
