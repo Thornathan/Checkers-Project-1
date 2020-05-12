@@ -1,7 +1,7 @@
 /* --- constants --- */
 const lookup = {
-    '1': 'red',
-    '-1': 'blue',
+    '1': 'black',
+    '-1': 'white',
     'null': 'transparent'
 };
 
@@ -50,18 +50,17 @@ function handleMove(evt) {
 }
 
 function cellClick(cell) {
-    console.log('clicked!');
-    const red = cell.children[0];
-    const blue = cell.children[1];
-    if(!red.hidden && blue.hidden) { //Red Checker is on cell, Remove Red Checker
-    red.hidden = true;
-    blue.hidden = false;
-    } else if(red.hidden && !blue.hidden) { //Blue Checker is on cell, Remove Blue Checker
-        red.hidden = true;
-        blue.hidden = true;
-    } else if(red.hidden && blue.hidden) { //No Checker is on cell, Add a Checker (Red) 
-        red.hidden = false;
-        blue.hidden = true;
+    const black = cell.children[0];
+    const white = cell.children[1];
+    if(!black.hidden && white.hidden) { //black Checker is on cell, Remove black Checker
+        black.hidden = true;
+        white.hidden = false;
+    } else if(black.hidden && !white.hidden) { //white Checker is on cell, Remove white Checker
+        black.hidden = true;
+        white.hidden = true;
+    } else if(black.hidden && white.hidden) { //No Checker is on cell, Add a Checker (black will show first) 
+        black.hidden = false;
+        white.hidden = true;
     }
 }
 
