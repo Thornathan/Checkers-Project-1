@@ -13,10 +13,8 @@ let winner; // 1 = Player 1; -1 = Player 2; null = no winner
 
 /* --- cached element refrences --- */
 const message = document.querySelector('h1');
-
 /* --- event listeners --- */
 document.querySelector('button').addEventListener('click', init);
-
 /* --- functions --- */
 init();
 
@@ -49,6 +47,22 @@ function handleMove(evt) {
     board[idx] = turn;
     turn *= -1;
     render();
+}
+
+function cellClick(cell) {
+    console.log('clicked!');
+    const red = cell.children[0];
+    const blue = cell.children[1];
+    if(!red.hidden && blue.hidden) { //Red Checker is on cell, Remove Red Checker
+    red.hidden = true;
+    blue.hidden = false;
+    } else if(red.hidden && !blue.hidden) { //Blue Checker is on cell, Remove Blue Checker
+        red.hidden = true;
+        blue.hidden = true;
+    } else if(red.hidden && blue.hidden) { //No Checker is on cell, Add a Checker (Red) 
+        red.hidden = false;
+        blue.hidden = true;
+    }
 }
 
 function init() {
