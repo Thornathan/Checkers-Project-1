@@ -38,16 +38,21 @@ button:hover {
 
 #boardContainer {
     display: inline-block;
-    padding: 3%;
+    padding: 2vmin;
     background-image: url(../images/board-container-bg.jpg);
     background-size: cover;
 }
 
+.row {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .cell {
     display: inline-block;
-    width: 10vmin;
-    height: 10vmin;
-    margin: 0px;
+    width: 8vmin;
+    height: 8vmin;
+    margin: .4vmin;
 }
 
 .checker {
@@ -55,6 +60,9 @@ button:hover {
     height: 80%;
     margin: 10%;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .black-checker {
@@ -79,7 +87,7 @@ button:hover {
     border: 2px solid rgba(255, 255, 255, .5);
 }
 
-.captured {
-    width: 10vmin;
-    height: 10vmin;
+#king {
+    width: 80%;
+    height: 80%;
 }

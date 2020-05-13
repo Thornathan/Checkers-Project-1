@@ -5,7 +5,7 @@ const lookup = {
     'null': 'transparent'
 };
 
-//Array of checker pieces
+//Array of checker pieces as objects
 const checkers = [
     {row: 1, cell: 2, color: 'white'},
     {row: 1, cell: 4, color: 'white'},
@@ -99,10 +99,16 @@ function renderCell(rowNumber, cellNumber) {
 
 //Function that will render the checker pieces 
 function renderCheckerPiece(i, color) {
+    if(checkers[i].isKing) {
+        return `<div id="checker-${i}" class="checker ${color}-checker" checkerIdx="${i}">
+            <img id="king" src="images/king-icon.png">
+        </div>`;
+    } else {
     return `<div id="checker-${i}" class="checker ${color}-checker" checkerIdx="${i}"></div>`;
+    }
 }
 
-//Function that will render the placement of the checkers
+//Function that will render the placement of the checkers a.k.a the render function
 function renderCheckers() {
     clearCheckers();
     $(`.black.cell`).click(moveChecker);
@@ -112,7 +118,8 @@ function renderCheckers() {
             $(`#cell-${checker.row}-${checker.cell}`).html(renderCheckerPiece(i, checker.color));
             $(`#cell-${checker.row}-${checker.cell}`).unbind('click');
         } else {
-            $(`#captured-${checker.color}`).append(renderCheckerPiece(i, checker.color));
+            $(`#captured-${checker.color}`)
+                .append(`<div class="cell">${renderCheckerPiece(i, checker.color)}</div>`);
         }
     }
     $('.checker').click(clickedChecker);
@@ -147,8 +154,24 @@ function moveChecker() {
         let blackCell = $(this);
         let id = blackCell.attr('id');
         let splitId = id.split('-');
-        selectedChecker.row = splitId[1]
-        selectedChecker.cell = splitId[2]
+        selectedChecker.row = Number(splitId[1])
+        selectedChecker.cell = Number(splitId[2])
+
+        if(selectedChecker.color == 'black' && selectedChecker.isKing == false) {
+            if(selectedChecker.row == (selectedChecker.row - 1)) {
+                
+            }
+        } else if(selectedChecker.color == 'white' && selectedChecker.isKing == false) {
+            if(selectedChecker.row == (selectedChecker.row + 1)) {
+
+            }
+        }
+        
+        if(selectedChecker.color == 'black' && selectedChecker.row == 1) {
+            selectedChecker.isKing = true;
+        } else if(selectedChecker.color == 'white' && selectedChecker.row == 8) {
+            selectedChecker.isKing = true;
+        }
         selectedChecker = undefined;
         renderCheckers();
     } else {
