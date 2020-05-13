@@ -38,23 +38,16 @@ button:hover {
 
 #boardContainer {
     display: inline-block;
-    padding: 2%;
-    border: 5px solid black;
+    padding: 3%;
     background-image: url(../images/board-container-bg.jpg);
     background-size: cover;
 }
 
-.row {
-    
-}
-
 .cell {
     display: inline-block;
-    width: 10vw;
-    height: 10vw;
+    width: 10vmin;
+    height: 10vmin;
     margin: 0px;
-    max-width: 11vh;
-    max-height: 11vh;
 }
 
 .checker {
@@ -80,4 +73,13 @@ button:hover {
 
 .white {
     background-image: url(../images/white-marble.jpeg);
+}
+
+.clicked {
+    border: 2px solid rgba(255, 255, 255, .5);
+}
+
+.captured {
+    width: 10vmin;
+    height: 10vmin;
 }

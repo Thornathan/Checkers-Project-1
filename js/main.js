@@ -5,6 +5,7 @@ const lookup = {
     'null': 'transparent'
 };
 
+//Array of checker pieces
 const checkers = [
     {row: 1, cell: 2, color: 'white'},
     {row: 1, cell: 4, color: 'white'},
@@ -37,6 +38,7 @@ let board; // Array of column arrays with 1, -1, or null
 let turn; // 1 or -1 (player)
 let king; // A king piece when a checker gets to the other end
 let winner; // 1 = Player 1; -1 = Player 2; null = no winner
+let selectedChecker = undefined; // A variable for when a checker is clicked and becomes a selected checker
 
 /* --- cached element refrences --- */
 const message = document.querySelector('h1');
@@ -95,22 +97,30 @@ function renderCell(rowNumber, cellNumber) {
     }
 }
 
-//Function that will render the checker pieces initial placement on proper rows
-function renderCheckerPiece(color) {
-    return `<div class="checker ${color}-checker"></div>`
+//Function that will render the checker pieces 
+function renderCheckerPiece(i, color) {
+    return `<div id="checker-${i}" class="checker ${color}-checker" checkerIdx="${i}"></div>`;
 }
 
-//Function that will render the checker pieces 
+//Function that will render the placement of the checkers
 function renderCheckers() {
+    clearCheckers();
+    $(`.black.cell`).click(moveChecker);
     for(let i = 0; i < checkers.length; i++) {
         let checker = checkers[i];
-        $(`#cell-${checker.row}-${checker.cell}`).html(renderCheckerPiece(checker.color));
+        if(checker.row && checker.cell) {
+            $(`#cell-${checker.row}-${checker.cell}`).html(renderCheckerPiece(i, checker.color));
+            $(`#cell-${checker.row}-${checker.cell}`).unbind('click');
+        } else {
+            $(`#captured-${checker.color}`).append(renderCheckerPiece(i, checker.color));
+        }
     }
+    $('.checker').click(clickedChecker);
 }
 
 //Function to figure out if a row/cell/checker is at an even or odd placement
 function evenOdd(num) {
-    return (num % 2 === 0) ? 'even' : 'odd'
+    return (num % 2 === 0) ? 'even' : 'odd';
 }
 
 //Function to figure out color placement for cell/checker
@@ -118,34 +128,50 @@ function cellColor(cellNumber, rowNumber) {
     return evenOdd(cellNumber) == evenOdd(rowNumber) ? 'white' : 'black'
 }
 
-function handleMove(evt) {
-    //Get square index
-    const idx = parseInt(evt.target.id.replace('sq', ''));
-    if(board[idx] || winner) return;
-    //update state variables
-    board[idx] = turn;
-    turn *= -1;
-    render();
-}
-
-function showChecker() {
-    let checker = $(this).children().first()
-    checker.showChecker()
-    if(!checker.is(":visible")) {
-        changeChecker(checker);
+//Function for when a checker is clicked
+function clickedChecker() {
+    let checker = $(this);
+    if(checker.hasClass(`clicked`)) {
+        removeChecker();
+        return
     }
+    $('.clicked').removeClass('clicked');
+    let checkerIdx = checker.attr('checkerIdx');
+    selectedChecker = checkers[checkerIdx];
+    checker.addClass('clicked');
 }
 
-function changeChecker(checker) {
-    if(checker.hasClass('black-checker')) {
-        checker.removeClass('black-checker')
-        checker.addClass('white-checker')
+//Function that will move checker piece after clicked
+function moveChecker() {
+    if(selectedChecker) {
+        let blackCell = $(this);
+        let id = blackCell.attr('id');
+        let splitId = id.split('-');
+        selectedChecker.row = splitId[1]
+        selectedChecker.cell = splitId[2]
+        selectedChecker = undefined;
+        renderCheckers();
     } else {
-        checker.addClass('black-checker')
-        checker.removeClass('white-checker')
+
     }
 }
 
+//Function that removes a checker when jumped
+function removeChecker() {
+    selectedChecker.row = undefined;
+    selectedChecker.cell = undefined;
+    selectedChecker = undefined;
+    renderCheckers()
+}
+
+//Function that will clear checker from the board
+function clearCheckers() {
+    $(`.black.cell`).html(``);
+    $(`.black.cell`).unbind('click');
+    $(`.captured`).html(``);
+}
+
+//Initialization function
 function init() {
     board = [
         [null,-1,null,-1,null,-1,null,-1],
@@ -157,35 +183,10 @@ function init() {
         [null,1,null,1,null,1,null,1],
         [1,null,1,null,1,null,1,null]
         ];
-    const checkers = [
-        {row: 1, cell: 2, color: 'white'},
-        {row: 1, cell: 4, color: 'white'},
-        {row: 1, cell: 6, color: 'white'},
-        {row: 1, cell: 8, color: 'white'},
-        {row: 2, cell: 1, color: 'white'},
-        {row: 2, cell: 3, color: 'white'},
-        {row: 2, cell: 5, color: 'white'},
-        {row: 2, cell: 7, color: 'white'},
-        {row: 3, cell: 2, color: 'white'},
-        {row: 3, cell: 4, color: 'white'},
-        {row: 3, cell: 6, color: 'white'},
-        {row: 3, cell: 8, color: 'white'},
-        {row: 6, cell: 1, color: 'black'},
-        {row: 6, cell: 3, color: 'black'},
-        {row: 6, cell: 5, color: 'black'},
-        {row: 6, cell: 7, color: 'black'},
-        {row: 7, cell: 2, color: 'black'},
-        {row: 7, cell: 4, color: 'black'},
-        {row: 7, cell: 6, color: 'black'},
-        {row: 7, cell: 8, color: 'black'},
-        {row: 8, cell: 1, color: 'black'},
-        {row: 8, cell: 3, color: 'black'},
-        {row: 8, cell: 5, color: 'black'},
-        {row: 8, cell: 7, color: 'black'},
-    ]
+    
     turn = 1;
     winner = null;
     $('#boardContainer').html(renderBoard());
+    $('.black-cell').click(moveChecker);
     renderCheckers();
-    render();
 };
