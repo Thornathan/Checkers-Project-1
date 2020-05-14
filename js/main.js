@@ -131,10 +131,10 @@ function renderCheckers() {
 function renderCheckerPiece(i, color) {
     if(checkers[i].isKing) {
         return `<div id="checker-${i}" class="checker ${color}-checker" checkerIdx="${i}">
-            <img id="king" src="images/king-icon.png">
-        </div>`;
+                    <img id="king" src="images/king-icon.png">
+                </div>`;
     } else {
-    return `<div id="checker-${i}" class="checker ${color}-checker" checkerIdx="${i}"></div>`;
+        return `<div id="checker-${i}" class="checker ${color}-checker" checkerIdx="${i}"></div>`;
     }
 }
 
@@ -198,9 +198,9 @@ function validMove(step, splitId) {
                 return (step === 2) ? previousCheckerLocation : undefined;
             }
         }
-        
+    }    
     //Handles white checker that are not king movements 
-    } else if(selectedChecker.color == 'white') {
+    if(selectedChecker.color == 'white') {
         if(selectedChecker.cell + step == Number(splitId[2]) || selectedChecker.cell - step == Number(splitId[2])) {
             if(selectedChecker.row + step == Number(splitId[1])) {
                 const previousCheckerLocation = {...selectedChecker}
@@ -269,7 +269,7 @@ function clearCheckers() {
 function checkWinner() {
     const black = document.getElementById("captured-black");
     const white = document.getElementById("captured-white");
-    if(white.children.length >= 1) {
+    if(white.children.length >= 11) {
         message.innerHTML = "Player 1 Wins!";
         document.getElementById('button').style.display = 'inline-block';
         return true;
