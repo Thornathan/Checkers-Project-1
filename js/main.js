@@ -269,7 +269,7 @@ function clearCheckers() {
 function checkWinner() {
     const black = document.getElementById("captured-black");
     const white = document.getElementById("captured-white");
-    if(white.children.length >= 11) {
+    if(white.children.length > 11) {
         message.innerHTML = "Player 1 Wins!";
         document.getElementById('button').style.display = 'inline-block';
         return true;
