@@ -2,10 +2,9 @@
 const lookup = {
     '1': 'player 1 Black',
     '-1': 'player 2 White',
-    'null': 'transparent'
 };
 
-//Array that will hold checkers
+//Array that will hold checker pieces
 let checkers = []
 
 /* --- app's state (variables) --- */
@@ -19,11 +18,19 @@ const message = document.querySelector('h1');
 document.querySelector('button').addEventListener('click', init);
 
 /* --- functions --- */
+
+//Initialization of game
 init();
 
+
+//Sets the message to display initial turn and alternates upon movement
 function renderMessage() {
     message.innerHTML = `${lookup[turn].toUpperCase()}'s Turn`;
 };
+
+function renderButton() {
+    document.getElementById('button').style.display = 'none';
+}
 
 //Function that will render board layout
 function renderBoard() {
@@ -74,14 +81,7 @@ function evenOdd(num) {
     return (num % 2 === 0) ? 'even' : 'odd';
 }
 
-//Function that will clear checker from the board
-function clearCheckers() {
-    $(`.black.cell`).html(``);
-    $(`.black.cell`).unbind('click');
-    $(`.captured`).html(``);
-}
-
-//Function that will assign array of checker objects
+//Function that will assign array of checker objects initial placement
 function resetCheckers() {
     checkers = [
         {row: 1, cell: 2, color: 'white'},
@@ -111,7 +111,7 @@ function resetCheckers() {
     ];
 }
 
-//Function that will render the placement of the checkers a.k.a the render function
+//Function that will render and update the checkers array as pieces move
 function renderCheckers() {
     clearCheckers();
     $(`.black.cell`).click(moveChecker);
@@ -138,7 +138,7 @@ function renderCheckerPiece(i, color) {
     }
 }
 
-//Function for when a checker is clicked
+//Function for when a checker is clicked adds a highlight
 function clickedChecker() {
     let checker = $(this);
     $('.clicked').removeClass('clicked');
@@ -146,7 +146,8 @@ function clickedChecker() {
     selectedChecker = checkers[checkerIdx];
     checker.addClass('clicked');
 }
-//Function that checks if a checker piece of opposite color is within the next row
+
+//Function that checks if a checker piece of opposite color is within the closest rows
 function checkOpponent(selectedPiecePosition, selectedPieceColor) {
     for(let i = 0; i < checkers.length; i++) {
         if(selectedPieceColor != checkers[i].color) {
@@ -175,7 +176,7 @@ function checkOpponent(selectedPiecePosition, selectedPieceColor) {
         }
     }
 }
-//Checks if a move is following the rules of checker
+//Checks if a move is following the rules of checkers
 function validMove(step, splitId) {
     if(selectedChecker.isKing) {
         if(selectedChecker.cell + step == Number(splitId[2]) || selectedChecker.cell - step == Number(splitId[2])) {
@@ -217,9 +218,11 @@ function moveChecker() {
         let blackCell = $(this);
         let id = blackCell.attr('id');
         let splitId = id.split('-');
-        //Check proper player movement
+        //Prevents opponenet from moving when not their turn
         if(selectedChecker.color == 'black' && turn == -1) return;
         if(selectedChecker.color == 'white' && turn == 1) return;
+        //If their is a winner game ends and prevents moves
+        if(checkWinner()) return;
         //First checks if their is an opponent piece
         if(checkOpponent(splitId, selectedChecker.color)) {
             let previousCheckerLocation = validMove(2, splitId);
@@ -228,7 +231,7 @@ function moveChecker() {
             }
         }
         validMove(1, splitId);
-        //Creates a King Piece
+        //Creates a King Piece for either piece respectively
         if(selectedChecker.color == 'black' && selectedChecker.row == 1) {
             selectedChecker.isKing = true;
         } else if(selectedChecker.color == 'white' && selectedChecker.row == 8) {
@@ -255,7 +258,7 @@ function removeChecker(previous, current) {
     }
 }
 
-//Function that will clear checker from the board and move it captured
+//Function that will clear checker from the board and move it to respective captured section
 function clearCheckers() {
     $(`.black.cell`).html(``);
     $(`.black.cell`).unbind('click');
@@ -266,19 +269,22 @@ function clearCheckers() {
 function checkWinner() {
     const black = document.getElementById("captured-black");
     const white = document.getElementById("captured-white");
-    if(white.children.length > 11) {
+    if(white.children.length >= 1) {
         message.innerHTML = "Player 1 Wins!";
-        document.getElementById('button').style.display = 'block';
+        document.getElementById('button').style.display = 'inline-block';
+        return true;
     } else if(black.children.length > 11) {
         message.innerHTML = "Player 2 Wins!";
-        document.getElementById('button').style.display = 'block';
+        document.getElementById('button').style.display = 'inline-block';
+        return true;
     }
 }
 
 //Initialization function
 function init() {
-    resetCheckers();
     turn = 1;
+    //Resets the checkers array
+    resetCheckers();
     //Renders the board to html
     $('#boardContainer').html(renderBoard());
     //Renders the ability to move the checkers
@@ -287,4 +293,6 @@ function init() {
     renderCheckers();
     //Renders the Message
     renderMessage();
+    //Hides Reset button until game ends
+    renderButton();
 };
