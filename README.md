@@ -73,9 +73,11 @@ Here is a link to play the game! [Checkers](https://thornathan.github.io/Checker
 
 Special thanks to:
 
-- Jim Haff an Jim Clark for helping in SEI-CC-8_SUPPORT when I had a question,
+- Jim Haff an Jim Clark for helping in SEI-CC-8_SUPPORT when I had a question regardless of it being simple or difficult
 
-- Alex Rowland and Thomas Choi for taking time to do zoom calls when I got very stuck or hit a wall,
+- Alex Rowland and Thomas Choi for taking time to do zoom calls when I got very stuck or hit a wall
+
+- My fellow classmates for listening to my frustrations in stand-ups as well as my accomplishments
 
 - My brother David for spending about 3 hours completely looking over my code and helping me figure out how to MOVE THE DAMN CHECKERS.
 
