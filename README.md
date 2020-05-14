@@ -81,7 +81,13 @@ Special thanks to:
 
 - My brother David for spending about 3 hours completely looking over my code and helping me figure out how to MOVE THE DAMN CHECKERS.
 
+## Bugs to still fix
 
+- One rule of checkers is when you jump a piece and you have the ability to jump another piece you should be allowed to jump again. Currently the game simply changes turns regardless if this is a possibility.
+
+- Leftbound error occurs if you try to jump a piece from lets say column 3 to column 1 and will not allow the jump and switches turns anyways.
+
+- Some issues occur later on with the pieces being jumpable but the jump doesn't occur and instead changes turns causing a player to lose a turn. 
 
 ## Author
 
